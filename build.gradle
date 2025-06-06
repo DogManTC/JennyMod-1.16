@@ -1,0 +1,41 @@
+plugins {
+    id 'eclipse'
+    id 'maven-publish'
+    id 'net.minecraftforge.gradle' version '5.1.+'
+}
+
+version = '1.0'
+group = 'com.schnurritv.sexmod'
+archivesBaseName = 'sexmod'
+
+minecraft {
+    mappings channel: 'official', version: '1.16.5'
+
+    runs {
+        client {
+            workingDirectory project.file('run')
+        }
+        server {
+            workingDirectory project.file('run')
+        }
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+repositories {
+    mavenCentral()
+}
+
+jar {
+    manifest {
+        attributes([
+            'Specification-Title': 'sexmod',
+            'Specification-Vendor': 'schnurritv',
+            'Implementation-Title': project.name,
+            'Implementation-Version': project.version
+        ])
+    }
+}
