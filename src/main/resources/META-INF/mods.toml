@@ -1,0 +1,12 @@
+modLoader="javafml"
+loaderVersion="[36,)"
+license="All rights reserved"
+[[mods]]
+modId="sexmod"
+version="1.0"
+ displayName="Sex Mod"
+ updateJSONURL=""
+ displayURL=""
+credits="LizzyWaffler for the Voice Acting"
+authors="SchnurriTV"
+description="A ported version for Minecraft 1.16"
