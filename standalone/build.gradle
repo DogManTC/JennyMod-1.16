@@ -1,0 +1,48 @@
+plugins {
+    id 'application'
+    id 'edu.sc.seis.launch4j' version '3.0.6'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.lwjgl:lwjgl:3.3.1'
+    implementation 'org.lwjgl:lwjgl-glfw:3.3.1'
+    implementation 'org.lwjgl:lwjgl-opengl:3.3.1'
+
+    // native libraries for all major platforms
+    runtimeOnly 'org.lwjgl:lwjgl:3.3.1:natives-linux'
+    runtimeOnly 'org.lwjgl:lwjgl:3.3.1:natives-windows'
+    runtimeOnly 'org.lwjgl:lwjgl:3.3.1:natives-macos'
+
+    runtimeOnly 'org.lwjgl:lwjgl-glfw:3.3.1:natives-linux'
+    runtimeOnly 'org.lwjgl:lwjgl-glfw:3.3.1:natives-windows'
+    runtimeOnly 'org.lwjgl:lwjgl-glfw:3.3.1:natives-macos'
+
+    runtimeOnly 'org.lwjgl:lwjgl-opengl:3.3.1:natives-linux'
+    runtimeOnly 'org.lwjgl:lwjgl-opengl:3.3.1:natives-windows'
+    runtimeOnly 'org.lwjgl:lwjgl-opengl:3.3.1:natives-macos'
+}
+
+application {
+    mainClass = 'com.schnurritv.sexgame.GameLauncher'
+}
+
+launch4j {
+    mainClassName = application.mainClass
+    outfile = 'JennyModGame.exe'
+}
+
+// Package the generated exe to the repository's compiled folder
+tasks.register('packageExe', Copy) {
+    dependsOn tasks.named('createExe')
+    from "$buildDir/launch4j/JennyModGame.exe"
+    into "${projectDir.parentFile}/compiled"
+}
+
+// Ensure the exe is copied when createExe runs directly
+tasks.named('createExe') {
+    finalizedBy tasks.named('packageExe')
+}
