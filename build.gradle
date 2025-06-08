@@ -1,8 +1,17 @@
 plugins {
+    id 'net.minecraftforge.gradle' version '6.0.36'
     id 'eclipse'
     id 'maven-publish'
-    id 'net.minecraftforge.gradle' version '5.1.+'
 }
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(8)
+    }
+}
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
 
 version = '1.0'
 group = 'com.schnurritv.sexmod'
@@ -27,6 +36,8 @@ tasks.withType(JavaCompile).configureEach {
 
 repositories {
     mavenCentral()
+    maven { url = 'https://maven.minecraftforge.net' }
+    maven { url = 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/' }
 }
 
 jar {
@@ -38,4 +49,24 @@ jar {
             'Implementation-Version': project.version
         ])
     }
+}
+
+sourceSets {
+    main {
+        java {
+            exclude 'com/schnurritv/sexmod/world/gen/**'
+            exclude 'com/schnurritv/sexmod/girls/**'
+            exclude 'com/schnurritv/sexmod/gui/**'
+            exclude 'com/schnurritv/sexmod/proxy/**'
+            exclude 'com/schnurritv/sexmod/util/Handlers/**'
+            exclude 'com/schnurritv/sexmod/util/interfaces/**'
+            exclude 'com/schnurritv/sexmod/world/**'
+            exclude 'com/schnurritv/sexmod/Packages/**'
+        }
+    }
+}
+
+dependencies {
+    minecraft 'net.minecraftforge:forge:1.16.5-36.2.39'
+    implementation fg.deobf('software.bernie.geckolib:geckolib-forge-1.16.5:3.0.57')
 }

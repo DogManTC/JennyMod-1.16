@@ -13,7 +13,7 @@
  *  net.minecraft.util.EnumHand
  *  net.minecraft.util.SoundEvent
  *  net.minecraft.util.math.BlockPos
- *  net.minecraft.util.math.Vec3d
+ *  net.minecraft.util.math.vector.Vector3d
  *  net.minecraft.world.World
  *  net.minecraftforge.fml.common.FMLCommonHandler
  *  net.minecraftforge.fml.common.network.internal.FMLNetworkHandler
@@ -57,7 +57,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.internal.FMLNetworkHandler;
@@ -183,8 +183,8 @@ extends GirlEntity {
                     this.targetPos = this.getInFrontOfPlayer();
                 }
                 this.func_189654_d(false);
-                Vec3d nextPos = Reference.Lerp(this.func_174791_d(), this.targetPos, (double)(40 - this.preparingPaymentTick));
-                this.func_70107_b(nextPos.field_72450_a, nextPos.field_72448_b, nextPos.field_72449_c);
+                Vector3d nextPos = Reference.Lerp(this.func_174791_d(), this.targetPos, (double)(40 - this.preparingPaymentTick));
+                this.func_70107_b(nextPos.x, nextPos.y, nextPos.z);
             }
         }
     }
@@ -251,19 +251,19 @@ extends GirlEntity {
         } else {
             this.field_70714_bg.func_85156_a(this.aiWander);
             this.field_70714_bg.func_85156_a(this.aiLookAtPlayer);
-            Vec3d bedPos = new Vec3d((double)temp.func_177958_n(), (double)temp.func_177956_o(), (double)temp.func_177952_p());
+            Vector3d bedPos = new Vector3d((double)temp.func_177958_n(), (double)temp.func_177956_o(), (double)temp.func_177952_p());
             int[] yaws = new int[]{0, 180, -90, 90};
-            Vec3d[][] potentialSpaces = new Vec3d[][]{{new Vec3d(0.5, 0.0, -0.5), new Vec3d(0.0, 0.0, -1.0)}, {new Vec3d(0.5, 0.0, 1.5), new Vec3d(0.0, 0.0, 1.0)}, {new Vec3d(-0.5, 0.0, 0.5), new Vec3d(-1.0, 0.0, 0.0)}, {new Vec3d(1.5, 0.0, 0.5), new Vec3d(1.0, 0.0, 0.0)}};
+            Vector3d[][] potentialSpaces = new Vector3d[][]{{new Vector3d(0.5, 0.0, -0.5), new Vector3d(0.0, 0.0, -1.0)}, {new Vector3d(0.5, 0.0, 1.5), new Vector3d(0.0, 0.0, 1.0)}, {new Vector3d(-0.5, 0.0, 0.5), new Vector3d(-1.0, 0.0, 0.0)}, {new Vector3d(1.5, 0.0, 0.5), new Vector3d(1.0, 0.0, 0.0)}};
             int whichOne = -1;
             for (int i = 0; i < potentialSpaces.length; ++i) {
-                Vec3d searchPos = bedPos.func_178787_e(potentialSpaces[i][1]);
+                Vector3d searchPos = bedPos.add(potentialSpaces[i][1]);
                 if (this.field_70170_p.func_180495_p(new BlockPos(searchPos.field_72450_a, searchPos.field_72448_b, searchPos.field_72449_c)).func_177230_c() != Blocks.field_150350_a) continue;
                 if (whichOne == -1) {
                     whichOne = i;
                     continue;
                 }
-                double oldDistance = this.func_180425_c().func_177954_c(bedPos.func_178787_e((Vec3d)potentialSpaces[whichOne][0]).field_72450_a, bedPos.func_178787_e((Vec3d)potentialSpaces[whichOne][0]).field_72448_b, bedPos.func_178787_e((Vec3d)potentialSpaces[whichOne][0]).field_72449_c);
-                double newDistance = this.func_180425_c().func_177954_c(bedPos.func_178787_e((Vec3d)potentialSpaces[i][0]).field_72450_a, bedPos.func_178787_e((Vec3d)potentialSpaces[i][0]).field_72448_b, bedPos.func_178787_e((Vec3d)potentialSpaces[i][0]).field_72449_c);
+                double oldDistance = this.func_180425_c().func_177954_c(bedPos.add(potentialSpaces[whichOne][0]).x, bedPos.add(potentialSpaces[whichOne][0]).y, bedPos.add(potentialSpaces[whichOne][0]).z);
+                double newDistance = this.func_180425_c().func_177954_c(bedPos.add(potentialSpaces[i][0]).x, bedPos.add(potentialSpaces[i][0]).y, bedPos.add(potentialSpaces[i][0]).z);
                 if (!(newDistance < oldDistance)) continue;
                 whichOne = i;
             }
@@ -272,9 +272,9 @@ extends GirlEntity {
                 this.say("bed is obscured...");
                 return;
             }
-            Vec3d targetPos = bedPos.func_178787_e(potentialSpaces[whichOne][0]);
+            Vector3d targetPos = bedPos.add(potentialSpaces[whichOne][0]);
             this.targetYaw = yaws[whichOne];
-            this.targetPos = new Vec3d(targetPos.field_72450_a, targetPos.field_72448_b, targetPos.field_72449_c);
+            this.targetPos = new Vector3d(targetPos.x, targetPos.y, targetPos.z);
             this.playerYaw = this.targetYaw;
             this.func_70661_as().func_75499_g();
             this.func_70661_as().func_75492_a(targetPos.field_72450_a, targetPos.field_72448_b, targetPos.field_72449_c, this.walkSpeed);

@@ -1,0 +1,4 @@
+.gradle/
+build/
+wrapper.log
+build.log
